@@ -1,6 +1,7 @@
 package com.demoqa.pages;
 
 import com.codeborne.selenide.SelenideElement;
+import com.demoqa.pages.components.CalendarComponent;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
@@ -8,12 +9,15 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 public class RegistrationPage {
+
+    CalendarComponent calendar = new CalendarComponent();
     SelenideElement
             firstNameInput = $("#firstName"),
             lastNameInput = $("#lastName"),
             userEmailInput = $("#userEmail"),
             genderWrapper = $("#genterWrapper"),
-            userNumberInput = $("#userNumber");
+            userNumberInput = $("#userNumber"),
+            birthDateInput = $("#dateOfBirthInput");
 
     public RegistrationPage openPage() {
         open("/automation-practice-form");
@@ -50,6 +54,13 @@ public class RegistrationPage {
 
     public RegistrationPage setUserNumber(String value) {
         userNumberInput.setValue(value);
+
+        return this;
+    }
+
+    public RegistrationPage setBirthDate(String day, String month, String year) {
+        birthDateInput.click();
+        calendar.setDate(day, month, year);
 
         return this;
     }
