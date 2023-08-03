@@ -1,7 +1,6 @@
-package com.demoqa;
+package com.demoqa.tests;
 
-import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.BeforeAll;
+import com.demoqa.pages.RegistrationPage;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.appear;
@@ -9,19 +8,17 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class RegistrationTests extends TestBase {
+public class RegistrationWithPageObjectsTests extends TestBase {
+
+    RegistrationPage registrationPage = new RegistrationPage();
 
     @Test
     void successfulRegistrationTest() {
-        open("/automation-practice-form");
-        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
-        executeJavaScript("$('#fixedban').remove()");
-        executeJavaScript("$('footer').remove()");
-
-        $("#firstName").setValue("Alex");
-        $("#lastName").setValue("Egorov");
-        $("#userEmail").setValue("alex@egorov.com");
-        $("#genterWrapper").$(byText("Other")).click();
+        registrationPage.openPage()
+                .setFirstName("Alex")
+                .setLastName("Egorov")
+                .setUserEmail("alex@egorov.com")
+                .setGender("Other");
         $("#userNumber").setValue("1234567890");
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption("July");
@@ -35,6 +32,27 @@ public class RegistrationTests extends TestBase {
         $("#stateCity-wrapper").$(byText("NCR")).click();
         $("#city").click();
         $("#stateCity-wrapper").$(byText("Delhi")).click();
+        $("#submit").click();
+
+        $(".modal-dialog").should(appear);
+        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+        registrationPage.checkResult("Alex")
+                .checkResult("Egorov")
+                .checkResult("alex@egorov.com")
+                .checkResult("1234567890");
+    }
+
+    @Test
+    void successfulRegistrationMinimalTest() {
+        open("/automation-practice-form");
+        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
+        executeJavaScript("$('#fixedban').remove()");
+        executeJavaScript("$('footer').remove()");
+
+        registrationPage.setFirstName("Alex");
+        registrationPage.setLastName("Egorov");
+        registrationPage.setGender("Other");
+        $("#userNumber").setValue("1234567890");
         $("#submit").click();
 
         $(".modal-dialog").should(appear);
