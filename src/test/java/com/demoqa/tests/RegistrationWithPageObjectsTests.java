@@ -21,7 +21,7 @@ public class RegistrationWithPageObjectsTests extends TestBase {
                 .setUserEmail("alex@egorov.com")
                 .setGender("Other")
                 .setUserNumber("1234567890")
-                .setBirthDate("4", "July", "2008");
+                .setBirthDate("04", "July", "2008");
         $("#subjectsInput").setValue("Math").pressEnter();
         $("#hobbiesWrapper").$(byText("Sports")).click();
         $("#uploadPicture").uploadFromClasspath("img/1.png");
@@ -42,20 +42,17 @@ public class RegistrationWithPageObjectsTests extends TestBase {
 
     @Test
     void successfulRegistrationMinimalTest() {
-        open("/automation-practice-form");
-        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
-        executeJavaScript("$('#fixedban').remove()");
-        executeJavaScript("$('footer').remove()");
-
-        registrationPage.setFirstName("Alex");
-        registrationPage.setLastName("Egorov");
-        registrationPage.setGender("Other");
-        $("#userNumber").setValue("1234567890");
+        registrationPage.openPage()
+                .setFirstName("Alex")
+                .setLastName("Egorov")
+                .setGender("Other")
+                .setUserNumber("1234567890");
         $("#submit").click();
 
         $(".modal-dialog").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").shouldHave(text("Alex"), text("Egorov"),
-                text("alex@egorov.com"), text("1234567890"));
+        registrationPage.checkResult("Alex")
+                .checkResult("Egorov")
+                .checkResult("1234567890");
     }
 }
