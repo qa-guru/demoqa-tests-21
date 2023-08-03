@@ -18,8 +18,8 @@ public class RegistrationWithPageObjectsTests extends TestBase {
                 .setFirstName("Alex")
                 .setLastName("Egorov")
                 .setUserEmail("alex@egorov.com")
-                .setGender("Other");
-        $("#userNumber").setValue("1234567890");
+                .setGender("Other")
+                .setUserNumber("1234567890");
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption("July");
         $(".react-datepicker__year-select").selectOption("2008");
