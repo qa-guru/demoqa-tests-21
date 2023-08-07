@@ -1,6 +1,9 @@
 package com.demoqa.utils;
 
+import com.github.javafaker.Faker;
+
 import java.security.SecureRandom;
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomUtils {
@@ -52,5 +55,9 @@ public class RandomUtils {
         int index = getRandomInt(0, array.length - 1);
 
         return array[index];
+    }
+
+    public static String getRandomFirstName() {
+        return new Faker().name().firstName();
     }
 }
